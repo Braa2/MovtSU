@@ -1,0 +1,414 @@
+/* Process Timeline Section */
+.process-section {
+  background-color: #050505;
+  padding: 10rem 2rem;
+  min-height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+.process-container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.process-header {
+  text-align: center;
+  margin-bottom: 6rem;
+}
+
+.process-label {
+  color: var(--primary-orange);
+  text-transform: uppercase;
+  letter-spacing: 0.3em;
+  font-size: 0.8rem;
+  margin-bottom: 1rem;
+  display: block;
+}
+
+.process-title {
+  font-size: clamp(2.5rem, 5vw, 4rem);
+  font-weight: 700;
+  color: white;
+  margin-bottom: 1rem;
+}
+
+.process-subtitle {
+  font-size: 1.1rem;
+  color: rgba(255, 255, 255, 0.5);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Timeline Wrapper */
+.timeline-wrapper {
+  position: relative;
+  padding: 2rem 0;
+  min-height: 2000px;
+}
+
+/* SVG Flight Path - BEHIND the text (z-index lower than steps) */
+.flight-path-svg {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  width: 120%;
+  height: 100%;
+  transform: translateX(-50%);
+  pointer-events: none;
+  z-index: 1; /* Behind the steps */
+}
+
+.flight-path {
+  filter: drop-shadow(0 0 12px rgba(255, 107, 0, 0.7));
+}
+
+/* Center reference line (dotted, very subtle) */
+.center-line {
+  position: absolute;
+  left: 50%;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 107, 0, 0.15) 0px,
+    rgba(255, 107, 0, 0.15) 8px,
+    transparent 8px,
+    transparent 16px
+  );
+  transform: translateX(-50%);
+  z-index: 0;
+}
+
+/* Plane Wrapper - FRONT of the line (highest z-index) */
+.plane-wrapper {
+  position: absolute;
+  width: 60px;
+  height: 60px;
+  z-index: 20; /* Above everything */
+  pointer-events: none;
+  left: 50%;
+  top: 0;
+  transform: translate(-50%, -50%);
+  will-change: transform;
+}
+
+.plane-icon {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 0 15px rgba(255, 107, 0, 0.9));
+  animation: planeGlow 1.5s ease-in-out infinite;
+}
+
+@keyframes planeGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(255, 107, 0, 0.7));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(255, 107, 0, 1));
+  }
+}
+
+/* Steps Container - ABOVE the flight path */
+.steps-container {
+  position: relative;
+  z-index: 10; /* Above the flight path */
+  display: flex;
+  flex-direction: column;
+  gap: 18rem; /* Large gap for smooth curves between steps */
+}
+
+/* Step Item */
+.step-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 3rem;
+  will-change: opacity, transform, filter;
+  position: relative;
+}
+
+.step-item:nth-child(odd) {
+  flex-direction: row;
+  padding-right: 55%;
+}
+
+.step-item:nth-child(even) {
+  flex-direction: row-reverse;
+  padding-left: 55%;
+  text-align: right;
+}
+
+/* Step Dot - on top of flight path */
+.step-dot {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 60px;
+  height: 60px;
+  background: linear-gradient(135deg, #ff6b00 0%, #ff9500 100%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 0 0 8px rgba(255, 107, 0, 0.15),
+    0 0 0 16px rgba(255, 107, 0, 0.05),
+    0 10px 40px rgba(255, 107, 0, 0.4);
+  z-index: 12;
+  transition: all 0.4s ease;
+}
+
+.step-item:hover .step-dot {
+  box-shadow: 
+    0 0 0 12px rgba(255, 107, 0, 0.25),
+    0 0 0 24px rgba(255, 107, 0, 0.1),
+    0 15px 50px rgba(255, 107, 0, 0.6);
+  transform: translateX(-50%) scale(1.1);
+}
+
+.step-number {
+  font-size: 1.2rem;
+  font-weight: 800;
+  color: white;
+}
+
+/* Step Content - text area where path goes BEHIND */
+.step-content {
+  flex: 1;
+  padding-top: 0.5rem;
+  position: relative;
+  z-index: 11; /* Above flight path but below dot on hover effects */
+}
+
+.step-title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: white;
+  margin-bottom: 0.8rem;
+  transition: color 0.3s ease;
+}
+
+.step-item:hover .step-title {
+  color: var(--primary-orange);
+}
+
+.step-description {
+  font-size: 1rem;
+  color: rgba(255, 255, 255, 0.6);
+  line-height: 1.7;
+  max-width: 350px;
+}
+
+.step-item:nth-child(even) .step-description {
+  margin-left: auto;
+}
+
+/* ==================== Responsive ==================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+  .process-section {
+    padding: 8rem 1.5rem;
+  }
+  
+  .process-header {
+    margin-bottom: 4rem;
+  }
+  
+  .steps-container {
+    gap: 14rem;
+  }
+  
+  .step-item:nth-child(odd) {
+    padding-right: 52%;
+  }
+  
+  .step-item:nth-child(even) {
+    padding-left: 52%;
+  }
+}
+
+/* Mobile Landscape / Small Tablet */
+@media (max-width: 900px) {
+  .process-section {
+    padding: 6rem 1.5rem;
+  }
+  
+  .process-title {
+    font-size: clamp(2rem, 5vw, 3rem);
+  }
+
+  .timeline-wrapper {
+    padding-left: 60px;
+    min-height: auto;
+  }
+
+  .flight-path-svg {
+    left: 35px;
+    width: 100px;
+    transform: none;
+  }
+
+  .center-line {
+    left: 35px;
+    transform: none;
+  }
+
+  .steps-container {
+    gap: 6rem;
+  }
+
+  .step-item,
+  .step-item:nth-child(odd),
+  .step-item:nth-child(even) {
+    flex-direction: row;
+    padding: 0;
+    padding-left: 80px;
+    text-align: left;
+  }
+
+  .step-dot {
+    left: 35px;
+    width: 50px;
+    height: 50px;
+  }
+
+  .plane-wrapper {
+    width: 40px;
+    height: 40px;
+  }
+
+  .step-item:nth-child(even) .step-description {
+    margin-left: 0;
+  }
+
+  .step-description {
+    max-width: 100%;
+  }
+  
+  .step-title {
+    font-size: 1.4rem;
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .process-section {
+    padding: 5rem 1rem;
+  }
+  
+  .process-header {
+    margin-bottom: 3rem;
+  }
+  
+  .process-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.2em;
+  }
+  
+  .process-title {
+    font-size: clamp(1.8rem, 6vw, 2.5rem);
+  }
+  
+  .process-subtitle {
+    font-size: 1rem;
+  }
+  
+  .timeline-wrapper {
+    padding-left: 50px;
+  }
+  
+  .flight-path-svg {
+    left: 25px;
+    width: 60px;
+  }
+  
+  .center-line {
+    left: 25px;
+  }
+
+  .step-item,
+  .step-item:nth-child(odd),
+  .step-item:nth-child(even) {
+    padding-left: 65px;
+    gap: 1.5rem;
+  }
+  
+  .step-dot {
+    left: 25px;
+    width: 45px;
+    height: 45px;
+  }
+  
+  .step-title {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .step-description {
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .step-number {
+    font-size: 0.9rem;
+  }
+  
+  .plane-wrapper {
+    width: 35px;
+    height: 35px;
+  }
+  
+  .steps-container {
+    gap: 5rem;
+  }
+}
+
+/* Small Mobile */
+@media (max-width: 400px) {
+  .process-section {
+    padding: 4rem 0.75rem;
+  }
+  
+  .timeline-wrapper {
+    padding-left: 45px;
+  }
+  
+  .flight-path-svg {
+    left: 20px;
+    width: 50px;
+  }
+  
+  .center-line {
+    left: 20px;
+  }
+  
+  .step-item,
+  .step-item:nth-child(odd),
+  .step-item:nth-child(even) {
+    padding-left: 55px;
+  }
+  
+  .step-dot {
+    left: 20px;
+    width: 40px;
+    height: 40px;
+  }
+  
+  .step-title {
+    font-size: 1.1rem;
+  }
+  
+  .step-description {
+    font-size: 0.85rem;
+  }
+  
+  .step-number {
+    font-size: 0.85rem;
+  }
+  
+  .steps-container {
+    gap: 4rem;
+  }
+}
