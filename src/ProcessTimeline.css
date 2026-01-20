@@ -319,9 +319,10 @@
     padding-left: 50px;
   }
   
-  .flight-path-svg {
-    left: 25px;
-    width: 60px;
+  /* Hide plane and flight path on mobile */
+  .flight-path-svg,
+  .plane-wrapper {
+    display: none;
   }
   
   .center-line {
@@ -355,11 +356,6 @@
     font-size: 0.9rem;
   }
   
-  .plane-wrapper {
-    width: 35px;
-    height: 35px;
-  }
-  
   .steps-container {
     gap: 5rem;
   }
@@ -373,11 +369,6 @@
   
   .timeline-wrapper {
     padding-left: 45px;
-  }
-  
-  .flight-path-svg {
-    left: 20px;
-    width: 50px;
   }
   
   .center-line {

@@ -41,6 +41,7 @@ const FAQS = [
 function App() {
   const [activeBg, setActiveBg] = useState(null)
   const [openFaq, setOpenFaq] = useState(null)
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
   const servicesTitleRef = useRef(null)
   const servicesSectionRef = useRef(null)
   const servicesRightRef = useRef(null)
@@ -48,6 +49,10 @@ function App() {
 
   const toggleFaq = (index) => {
     setOpenFaq(openFaq === index ? null : index)
+  }
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen)
   }
 
   // Reliable image URLs (Pexels - no hotlink issues)
@@ -255,6 +260,9 @@ function App() {
     const target = document.getElementById(targetId)
     if (!target) return
 
+    // Close mobile menu when navigating
+    setMobileMenuOpen(false)
+
     const targetPosition = target.getBoundingClientRect().top + window.scrollY - 80
 
     anime({
@@ -272,20 +280,40 @@ function App() {
     <div className="app-container">
 
       {/* Floating Pill Navbar */}
-      <nav className="floating-nav">
+      <nav className={`floating-nav ${mobileMenuOpen ? 'menu-open' : ''}`}>
         <div className="nav-brand" onClick={() => smoothScrollTo('hero')}>
           MovtoSU
         </div>
-        <div className="nav-links">
+        <div className={`nav-links ${mobileMenuOpen ? 'active' : ''}`}>
           <span className="nav-link" onClick={() => smoothScrollTo('hero')}>Home</span>
           <span className="nav-link" onClick={() => smoothScrollTo('about')}>About</span>
           <span className="nav-link" onClick={() => smoothScrollTo('services')}>Services</span>
           <span className="nav-link" onClick={() => smoothScrollTo('faq')}>FAQ</span>
       </div>
-        <button className="nav-contact-btn" onClick={() => smoothScrollTo('faq')}>
+        <button className="nav-contact-btn desktop-only" onClick={() => smoothScrollTo('faq')}>
           Get Started  ✈️
         </button>
+        <button className="burger-menu" onClick={toggleMobileMenu} aria-label="Toggle menu">
+          <span className={`burger-line ${mobileMenuOpen ? 'open' : ''}`}></span>
+          <span className={`burger-line ${mobileMenuOpen ? 'open' : ''}`}></span>
+          <span className={`burger-line ${mobileMenuOpen ? 'open' : ''}`}></span>
+        </button>
       </nav>
+
+      {/* Mobile Menu Overlay */}
+      <div className={`mobile-menu-overlay ${mobileMenuOpen ? 'active' : ''}`} onClick={() => setMobileMenuOpen(false)}>
+        <div className="mobile-menu" onClick={(e) => e.stopPropagation()}>
+          <div className="mobile-menu-links">
+            <span className="mobile-nav-link" onClick={() => smoothScrollTo('hero')}>Home</span>
+            <span className="mobile-nav-link" onClick={() => smoothScrollTo('about')}>About</span>
+            <span className="mobile-nav-link" onClick={() => smoothScrollTo('services')}>Services</span>
+            <span className="mobile-nav-link" onClick={() => smoothScrollTo('faq')}>FAQ</span>
+          </div>
+          <button className="mobile-cta-btn" onClick={() => smoothScrollTo('faq')}>
+            Get Started  ✈️
+          </button>
+        </div>
+      </div>
 
       {/* Hero Section */}
       <header id="hero" className="hero" ref={heroRef}>
